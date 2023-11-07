@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfCHdcUAAAAAOwkHsW_7W7MfoOrvoIw9CXdLRBA"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./lib/grecaptcha.js" id="grecaptchajs"></script>
+	<title>Clock</title>
+	<style>
+		@font-face {
+			font-family: Nechao_Sharp;
+			src: url('./lib/Nechao Sharp.ttf') format('truetype');
+		}
+		@font-face {
+			font-family: abster;
+			src: url('./lib/ABSTER.otf') format('opentype');
+		}
+		.grecaptcha-badge {
+			visibility: hidden;
+		}
+		section {
+			display: block;
+			margin-top: 50px;
+			margin-bottom: 50px;
+			padding-top: 25px;
+			padding-bottom: 25px;
+		}
+		section:first-of-type {
+			margin-top: 0;
+		}
+		html {
+			font-size: 16pt;
+			font-family: Nechao_Sharp;
+		}
+		span.js_time {
+			font-size: 24pt;
+		}
+	</style>
+	<script>
+		function get_list_datetime(classname) {
+			let t=document.getElementsByClassName(classname);
+			t=Array.from(t);
+			return t;
+		}
+		function setVal_datetime(t_array, value) {
+			if ( ! Array.isArray(t_array) ) {
+				return false;
+			}
+
+			t_array.forEach(function(elm) {
+				elm.innerText=value;
+			})
+		}
+		function get_datetime(timestr=null) {
+			t=null;
+			if (timestr===null) {
+				t=new Date();
+			} else {
+				t=new Date(timestr);
+			}
+			r1={
+				year  : t.getFullYear(),
+				month : t.getMonth()+1,
+				date  : t.getDate(),
+				hour  : t.getHours(),
+				minute: t.getMinutes(),
+				second: t.getSeconds(),
+				day   : t.getDay(),
+			}
+			r2={
+				year  : ( '0000' + r1.year   + '' ).substr(-4),
+				month : ( '0000' + r1.month  + '' ).substr(-2),
+				date  : ( '0000' + r1.date   + '' ).substr(-2),
+				hour  : ( '0000' + r1.hour   + '' ).substr(-2),
+				minute: ( '0000' + r1.minute + '' ).substr(-2),
+				second: ( '0000' + r1.second + '' ).substr(-2),
+				day   : '',
+			}
+			switch (r1.day) {
+				case 0:
+					r2.day='Sun'
+					r2.day='日'
+					break;
+				case 1:
+					r2.day='Mon'
+					r2.day='月'
+					break;
+				case 2:
+					r2.day='Tue'
+					r2.day='火'
+					break;
+				case 3:
+					r2.day='Wed'
+					r2.day='水'
+					break;
+				case 4:
+					r2.day='Thu'
+					r2.day='木'
+					break;
+				case 5:
+					r2.day='Fri'
+					r2.day='金'
+					break;
+				case 6:
+					r2.day='Sat'
+					r2.day='土'
+					break;
+			}
+			return [r1,r2];
+		}
+
+		window.addEventListener('DOMContentLoaded', function() {
+			console.debug('DOMContent loaded');
+
+			setInterval(() => {
+				setVal_datetime(
+					get_list_datetime('js_datetime_year'),
+					get_datetime()[1].year
+				);
+				setVal_datetime(
+					get_list_datetime('js_datetime_month'),
+					get_datetime()[1].month
+				);
+				setVal_datetime(
+					get_list_datetime('js_datetime_date'),
+					get_datetime()[1].date
+				);
+				setVal_datetime(
+					get_list_datetime('js_datetime_hour'),
+					get_datetime()[1].hour
+				);
+				setVal_datetime(
+					get_list_datetime('js_datetime_minute'),
+					get_datetime()[1].minute
+				);
+				setVal_datetime(
+					get_list_datetime('js_datetime_second'),
+					get_datetime()[1].second
+				);
+				setVal_datetime(
+					get_list_datetime('js_datetime_day'),
+					get_datetime()[1].day
+				);
+			}, 250);
+		});
+
+	</script>
+</head>
+<body>
+	<section id="section1">
+		<span class="js_date">
+			<span class="js_datetime_month"></span>/<span class="js_datetime_date"></span>
+		</span>
+		<br>
+		<span class="js_time">
+			<span class="js_datetime_hour"></span>:<span class="js_datetime_minute"></span>
+		</span>
+	</section>
+	<section id="section2">
+		<span class="js_date">
+			<span class="js_datetime_month"></span>/<span class="js_datetime_date"></span>(<span class="js_datetime_day"></span>)
+		</span>
+		<br>
+		<span class="js_time">
+			<span class="js_datetime_hour"></span>:<span class="js_datetime_minute"></span>
+		</span>
+	</section>
+	<section id="section3">
+		<span class="js_datetime_year"></span>/<span class="js_datetime_month"></span>/<span class="js_datetime_date"></span>
+		<br>
+		<span class="js_datetime_hour"></span>:<span class="js_datetime_minute"></span>:<span class="js_datetime_second"></span>
+	</section>
+</body>
+</html>
